@@ -52,14 +52,14 @@ public class VoiceChatPatch
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.Team))),
             new (OpCodes.Brfalse_S, skip),
             
-            // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Spectator) noSpectatorSkip;
+            // if (referenceHub.roleManager.CurrentRole.Team != Team.Dead) noSpectatorSkip;
             // if (!msg.Speaker.IsSpectatedBy(referenceHub)) skip;
             // else spectatorSkip;
             new (OpCodes.Ldloc_S, 4),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-            new (OpCodes.Ldc_I4_2),
+            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.Team))),
+            new (OpCodes.Ldc_I4_5),
             new (OpCodes.Ceq),
             new (OpCodes.Brfalse_S, noSpectatorSkip),
             new (OpCodes.Ldarg_1),
