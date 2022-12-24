@@ -6,7 +6,7 @@ namespace ScpChatExtension;
 
 public class EntryPoint
 {
-    public const string Version = "1.0.0.0";
+    public const string Version = "1.0.0.1";
 
     private static readonly Harmony HarmonyPatcher = new("chatextensions.jesusqc.com");
     
