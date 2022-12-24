@@ -5,6 +5,7 @@ using HarmonyLib;
 using Mirror;
 using NorthwoodLib.Pools;
 using PlayerRoles;
+using PlayerRoles.Spectating;
 using UnityEngine;
 using VoiceChat.Networking;
 
@@ -30,6 +31,7 @@ public class VoiceChatPatch
 
         Label skip = generator.DefineLabel();
         Label spectatorSkip = generator.DefineLabel();
+        Label noSpectatorSkip = generator.DefineLabel();
 
         int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Brfalse_S) - 1;
         
@@ -50,17 +52,25 @@ public class VoiceChatPatch
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.Team))),
             new (OpCodes.Brfalse_S, skip),
             
-            // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Spectator) spectatorSkip;
+            // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Spectator) noSpectatorSkip;
+            // if (!msg.Speaker.IsSpectatedBy(referenceHub)) skip;
+            // else spectatorSkip;
             new (OpCodes.Ldloc_S, 4),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
             new (OpCodes.Ldc_I4_2),
             new (OpCodes.Ceq),
-            new (OpCodes.Brtrue_S, spectatorSkip),
+            new (OpCodes.Brfalse_S, noSpectatorSkip),
+            new (OpCodes.Ldarg_1),
+            new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
+            new (OpCodes.Ldloc_S, 4),
+            new (OpCodes.Call, AccessTools.Method(typeof(SpectatorNetworking), nameof(SpectatorNetworking.IsSpectatedBy))),
+            new (OpCodes.Brfalse_S, skip),
+            new (OpCodes.Br_S, spectatorSkip),
             
             // if (!AllowedRoles.Contains(msg.Speaker.roleManager.CurrentRole.RoleTypeId)) skip;
-            new (OpCodes.Ldarg_1),
+            new CodeInstruction(OpCodes.Ldarg_1).WithLabels(noSpectatorSkip),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
