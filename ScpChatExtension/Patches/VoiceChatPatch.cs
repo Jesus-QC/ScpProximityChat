@@ -68,19 +68,19 @@ public class VoiceChatPatch
             new (OpCodes.Call, AccessTools.Method(typeof(SpectatorNetworking), nameof(SpectatorNetworking.IsSpectatedBy))),
             new (OpCodes.Brfalse_S, skip),
             new (OpCodes.Br_S, spectatorSkip),
-            
-            // if (!AllowedRoles.Contains(msg.Speaker.roleManager.CurrentRole.RoleTypeId)) skip;
-            new CodeInstruction(OpCodes.Ldarg_1).WithLabels(noSpectatorSkip),
+
+            // if (!EntryPoint.Config.AllowedRoles.Contains(msg.Speaker.roleManager.RoleTypeId)) skip;
+            new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))).WithLabels(noSpectatorSkip),
+            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PluginConfig), nameof(PluginConfig.AllowedRoles))),
+            new (OpCodes.Ldarg_1),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-            new (OpCodes.Ldfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))),
-            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PluginConfig), nameof(PluginConfig.AllowedRoles))),
             new (OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<RoleTypeId>), nameof(HashSet<RoleTypeId>.Contains))),
             new (OpCodes.Brfalse_S, skip),
-
-            // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= MaxProximityDistance) skip;
+     
+            // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= 7) skip;
             new (OpCodes.Ldarg_1),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.transform))),
