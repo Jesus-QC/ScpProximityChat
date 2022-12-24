@@ -80,7 +80,7 @@ public class VoiceChatPatch
             new (OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<RoleTypeId>), nameof(HashSet<RoleTypeId>.Contains))),
             new (OpCodes.Brfalse_S, skip),
      
-            // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= 7) skip;
+            // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= EntryPoint.Config.MaxProximityDistance) skip;
             new (OpCodes.Ldarg_1),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.transform))),
