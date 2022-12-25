@@ -52,6 +52,18 @@ public class VoiceChatPatch
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.Team))),
             new (OpCodes.Brfalse_S, skip),
             
+            // if (!EntryPoint.Config.AllowedRoles.Contains(msg.Speaker.roleManager.RoleTypeId)) skip;
+            new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))).WithLabels(noSpectatorSkip),
+            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PluginConfig), nameof(PluginConfig.AllowedRoles))),
+            new (OpCodes.Ldarg_1),
+            new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
+            new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
+            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
+            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
+            new (OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<RoleTypeId>), nameof(HashSet<RoleTypeId>.Contains))),
+            new (OpCodes.Brfalse_S, skip),
+
+            
             // if (referenceHub.roleManager.CurrentRole.Team != Team.Dead) noSpectatorSkip;
             // if (!msg.Speaker.IsSpectatedBy(referenceHub)) skip;
             // else spectatorSkip;
@@ -69,17 +81,6 @@ public class VoiceChatPatch
             new (OpCodes.Brfalse_S, skip),
             new (OpCodes.Br_S, spectatorSkip),
 
-            // if (!EntryPoint.Config.AllowedRoles.Contains(msg.Speaker.roleManager.RoleTypeId)) skip;
-            new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))).WithLabels(noSpectatorSkip),
-            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PluginConfig), nameof(PluginConfig.AllowedRoles))),
-            new (OpCodes.Ldarg_1),
-            new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
-            new (OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
-            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-            new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-            new (OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<RoleTypeId>), nameof(HashSet<RoleTypeId>.Contains))),
-            new (OpCodes.Brfalse_S, skip),
-     
             // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= 7) skip;
             new (OpCodes.Ldarg_1),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
