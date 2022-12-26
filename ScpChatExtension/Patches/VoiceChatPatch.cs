@@ -39,7 +39,7 @@ public class VoiceChatPatch
 
         newInstructions.InsertRange(index, new List<CodeInstruction>()
         {
-            // if (voiceChatChannel is not VoiceChatChannel.ScpChat) skip;
+            // if (voiceChatChannel != VoiceChatChannel.ScpChat) skip;
             new (OpCodes.Ldloc_2),
             new (OpCodes.Ldc_I4_3),
             new (OpCodes.Ceq),
@@ -53,7 +53,7 @@ public class VoiceChatPatch
             new (OpCodes.Brfalse_S, skip),
             
             // if (!EntryPoint.Config.AllowedRoles.Contains(msg.Speaker.roleManager.RoleTypeId)) skip;
-            new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))).WithLabels(noSpectatorSkip),
+            new (OpCodes.Ldsfld, AccessTools.Field(typeof(EntryPoint), nameof(EntryPoint.Config))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(PluginConfig), nameof(PluginConfig.AllowedRoles))),
             new (OpCodes.Ldarg_1),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
@@ -63,7 +63,6 @@ public class VoiceChatPatch
             new (OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<RoleTypeId>), nameof(HashSet<RoleTypeId>.Contains))),
             new (OpCodes.Brfalse_S, skip),
 
-            
             // if (referenceHub.roleManager.CurrentRole.Team != Team.Dead) noSpectatorSkip;
             // if (!msg.Speaker.IsSpectatedBy(referenceHub)) skip;
             // else spectatorSkip;
@@ -82,7 +81,7 @@ public class VoiceChatPatch
             new (OpCodes.Br_S, spectatorSkip),
 
             // if(Vector3.Distance(msg.Speaker.transform.position, referenceHub.transform.position) >= 7) skip;
-            new (OpCodes.Ldarg_1),
+            new CodeInstruction(OpCodes.Ldarg_1).WithLabels(noSpectatorSkip),
             new (OpCodes.Ldfld, AccessTools.Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.transform))),
             new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.position))),
