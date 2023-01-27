@@ -18,5 +18,8 @@ namespace ScpChatExtension
             RoleTypeId.Scp0492,
             RoleTypeId.Scp939,
         };
+        
+        public string EnableHint { get; set; } = "Proximity Chat has been enabled!";
+        public string DisableHint { get; set; } = "Proximity Chat has been disabled!";
     }
 }
