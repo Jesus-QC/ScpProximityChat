@@ -38,30 +38,38 @@
           <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\Assembly-CSharp-Publicized.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="CommandSystem.Core">
+          <HintPath>D:\_Coding\SCPSL\Plugins\Dependencies\CommandSystem.Core.dll</HintPath>
         </Reference>
         <Reference Include="Mirror">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\Mirror.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="NorthwoodLib">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\NorthwoodLib.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\NorthwoodLib.dll</HintPath>
         </Reference>
         <Reference Include="PluginAPI">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\PluginAPI-Publicized.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\PluginAPI-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="Pooling">
+          <HintPath>D:\_Coding\SCPSL\Plugins\Dependencies\Pooling.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\UnityEngine.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\..\..\SCPSL\Plugins\Dependencies\UnityEngine.CoreModule.dll</HintPath>
+          <HintPath>$(SL_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="EntryPoint.cs" />
+        <Compile Include="Features\VoiceChatHandler.cs" />
+        <Compile Include="Patches\NoClipTogglePatch.cs" />
         <Compile Include="Patches\VoiceChatPatch.cs" />
         <Compile Include="PluginConfig.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
