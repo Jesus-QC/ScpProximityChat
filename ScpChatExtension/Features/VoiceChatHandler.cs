@@ -47,7 +47,7 @@ public static class VoiceChatHandler
             return true;
         
         SendProximityMessage(message);
-        return false;
+        return !EntryPoint.Config.ToggleChat;
     }
     
     private static void SendProximityMessage(VoiceMessage msg)
