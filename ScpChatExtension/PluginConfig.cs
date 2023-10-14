@@ -23,5 +23,9 @@ namespace ScpChatExtension
             RoleTypeId.Scp0492,
             RoleTypeId.Scp939,
         };
+        
+        public bool SendBroadcastOnRoleChange { get; set; } = false;
+        public ushort BroadcastDuration { get; set; } = 5;
+        public string BroadcastMessage { get; set; } = "<b>Proximity Chat can be toggled with the <color=#42f57b>[ALT]</color> key</b>.";
     }
 }

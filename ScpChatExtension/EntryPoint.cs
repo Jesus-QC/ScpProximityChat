@@ -1,12 +1,15 @@
 ﻿using HarmonyLib;
+using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Events;
 
 namespace ScpChatExtension;
 
 public class EntryPoint
 {
-    public const string Version = "1.0.0.4";
+    public const string Version = "1.0.0.5";
 
     private static readonly Harmony HarmonyPatcher = new("chatextensions.jesusqc.com");
     
@@ -15,11 +18,26 @@ public class EntryPoint
     [PluginEntryPoint("ScpChatExtension", Version, "Makes SCPs able to talk inside the proximity chat.", "Jesus-QC")]
     private void Init()
     {
-        if(!Config.IsEnabled)
+        if (!Config.IsEnabled)
             return;
         
         Log.Raw($"<color=blue>Loading ScpChatExtension {Version} by Jesus-QC</color>");
+        
         HarmonyPatcher.PatchAll();
+        
+        if (!Config.SendBroadcastOnRoleChange)
+            return;
+        
+        EventManager.RegisterEvents(this);
+    }
+
+    [PluginEvent(ServerEventType.PlayerChangeRole)]
+    public void OnPlayerChangingRole(Player plr, PlayerRoleBase oldRole, RoleTypeId newRole, RoleChangeReason reason)
+    {
+        if (newRole.GetTeam() is not Team.SCPs)
+            return;
+        
+        plr.SendBroadcast(Config.BroadcastMessage, Config.BroadcastDuration);
     }
     
 }
