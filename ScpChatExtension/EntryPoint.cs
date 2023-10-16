@@ -9,7 +9,7 @@ namespace ScpChatExtension;
 
 public class EntryPoint
 {
-    public const string Version = "1.0.0.5";
+    public const string Version = "1.0.0.6";
 
     private static readonly Harmony HarmonyPatcher = new("chatextensions.jesusqc.com");
     
@@ -34,7 +34,7 @@ public class EntryPoint
     [PluginEvent(ServerEventType.PlayerChangeRole)]
     public void OnPlayerChangingRole(Player plr, PlayerRoleBase oldRole, RoleTypeId newRole, RoleChangeReason reason)
     {
-        if (newRole.GetTeam() is not Team.SCPs)
+        if (!Config.AllowedRoles.Contains(newRole))
             return;
         
         plr.SendBroadcast(Config.BroadcastMessage, Config.BroadcastDuration);
