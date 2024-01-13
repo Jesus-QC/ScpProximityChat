@@ -1,10 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScpProximityChat", "ScpProximityChat\ScpProximityChat.csproj", "{444B9DD9-EF85-4EFA-8A0A-BA70ECE95E07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScpProximityChatExiled", "ScpProximityChatExiled\ScpProximityChatExiled.csproj", "{731158F7-C918-4290-ADFB-44C27452EF58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{444B9DD9-EF85-4EFA-8A0A-BA70ECE95E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444B9DD9-EF85-4EFA-8A0A-BA70ECE95E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444B9DD9-EF85-4EFA-8A0A-BA70ECE95E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444B9DD9-EF85-4EFA-8A0A-BA70ECE95E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731158F7-C918-4290-ADFB-44C27452EF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731158F7-C918-4290-ADFB-44C27452EF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731158F7-C918-4290-ADFB-44C27452EF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731158F7-C918-4290-ADFB-44C27452EF58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
