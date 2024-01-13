@@ -1,5 +1,5 @@
 <h1 align="center">ScpProximityChat</h1>
-<h6 align="center">Also known as ScpChatExtensions, works for both Exiled and NWAPI</h6>
+<h6 align="center">Also known as ScpChatExtension, works for both Exiled and NWAPI</h6>
 
 <div align="center">
 
